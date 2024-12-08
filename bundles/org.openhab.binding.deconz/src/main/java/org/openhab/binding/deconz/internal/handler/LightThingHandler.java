@@ -371,7 +371,13 @@ public class LightThingHandler extends DeconzBaseThingHandler {
                 commandDescriptionProvider.setCommandOptions(effectChannelUID, toCommandOptionList(options));
                 break;
             default:
-                options = List.of("none", "colorloop");
+                if (lightMessage.capabilities != null && lightMessage.capabilities.color != null
+                        && lightMessage.capabilities.color.getEffectsList().size() > 0) {
+                    options = lightMessage.capabilities.color.getEffectsList();
+                } else {
+                    // default options (Hue)
+                    options = List.of("none", "colorloop");
+                }
                 commandDescriptionProvider.setCommandOptions(effectChannelUID, toCommandOptionList(options));
         }
 
